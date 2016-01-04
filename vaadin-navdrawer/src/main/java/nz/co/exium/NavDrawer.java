@@ -3,42 +3,75 @@ package nz.co.exium;
 import nz.co.exium.client.NavDrawerClientRpc;
 import nz.co.exium.client.NavDrawerServerRpc;
 import nz.co.exium.client.NavDrawerState;
+import nz.co.exium.client.NavDrawerListener;
+import com.vaadin.ui.AbstractSingleComponentContainer;
+import com.vaadin.ui.Component;
 
-import com.vaadin.shared.MouseEventDetails;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 // This is the server-side UI component that provides public API 
 // for NavDrawer
-public class NavDrawer extends com.vaadin.ui.AbstractComponent {
+public class NavDrawer extends AbstractComponentContainer {
 
-	private int clickCount = 0;
-
-	// To process events from the client, we implement ServerRpc
+    private final List<NavDrawerListener> listenerList = new ArrayList<>();
+    private List<Component> children = new ArrayList<>();
+    
 	private NavDrawerServerRpc rpc = new NavDrawerServerRpc() {
 
-		// Event received from client - user clicked our widget
-		public void clicked(MouseEventDetails mouseDetails) {
-			
-			// Send nag message every 5:th click with ClientRpc
-			if (++clickCount % 5 == 0) {
-				getRpcProxy(NavDrawerClientRpc.class)
-						.alert("Ok, that's enough!");
-			}
-			
-			// Update shared state. This state update is automatically 
-			// sent to the client. 
-			getState().text = "You have clicked " + clickCount + " times";
+		public void clicked(boolean enabled) {
+			getState().expand = enabled;
+			for (NavDrawerListener listener : listenerList) {
+                listener.onToggle(enabled);
+            }
 		}
 	};
 
 	public NavDrawer() {
-
-		// To receive events from the client, we register ServerRpc
 		registerRpc(rpc);
 	}
 
-	// We must override getState() to cast the state to NavDrawerState
 	@Override
 	public NavDrawerState getState() {
 		return (NavDrawerState) super.getState();
 	}
+	
+    public void collapse() {
+        getRpcProxy(NavDrawerClientRpc.class).setExpand(false, true);
+    }
+
+    public void expand() {
+        getRpcProxy(NavDrawerClientRpc.class).setExpand(true, true);
+    }
+    
+    public boolean isExpanded() {
+        return getState().expand;
+    }
+    
+    public int getAnimationDuration() {
+        return getState().animationDuration;
+    }
+
+    public void setAnimationDuration(final int animationDuration) {
+        getState().animationDuration = animationDuration;
+    }
+
+    public void setExpanded(final boolean value, final boolean animated) {
+        getRpcProxy(NavDrawerClientRpc.class).setExpand(value, animated);
+    }
+
+    @Override
+    public int getComponentCount() {
+        return children.size();
+    }
+
+    @Override
+    public Iterator<Component> iterator() {
+        return children.iterator();
+    }
+    
+    public void toggle() {
+		getRpcProxy(NavDrawerClientRpc.class).setExpand(!getState().expand, true);
+    }
 }

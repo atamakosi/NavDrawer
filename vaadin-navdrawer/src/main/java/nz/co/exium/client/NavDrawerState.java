@@ -1,8 +1,12 @@
 package nz.co.exium.client;
 
-public class NavDrawerState extends com.vaadin.shared.AbstractComponentState {
+import com.vaadin.shared.AbstractComponentState;
 
-	// State can have both public variable and bean properties
-	public String text = "NavDrawer";
+public class NavDrawerState extends AbstractComponentState {
+
+    public boolean expand = false;
+    public int animationDuration = 500;
+    public int pixel = -1;
+    public int width = 256;
 
 }

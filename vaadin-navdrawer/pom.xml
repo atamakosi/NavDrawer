@@ -5,7 +5,7 @@
 	<groupId>nz.co.exium</groupId>
 	<artifactId>vaadin-navdrawer</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0</version>
+	<version>1.03</version>
 	<name>NavDrawer Add-on</name>
 
 	<properties>
@@ -101,14 +101,13 @@
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
@@ -205,4 +204,6 @@
 		
 	</build>
 
+	<url>Container to hold components for navigation.</url>
+	<description>NavDrawer is a container for components that can be hidden or expanded based on event listeners from other components such as buttons.</description>
 </project>
