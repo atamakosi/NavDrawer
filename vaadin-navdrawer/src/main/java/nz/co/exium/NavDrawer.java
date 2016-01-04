@@ -1,11 +1,10 @@
 package nz.co.exium;
 
+import com.vaadin.ui.AbstractSingleComponentContainer;
+import com.vaadin.ui.Component;
 import nz.co.exium.client.NavDrawerClientRpc;
 import nz.co.exium.client.NavDrawerServerRpc;
 import nz.co.exium.client.NavDrawerState;
-import nz.co.exium.client.NavDrawerListener;
-import com.vaadin.ui.AbstractSingleComponentContainer;
-import com.vaadin.ui.Component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,18 +12,16 @@ import java.util.List;
 
 // This is the server-side UI component that provides public API 
 // for NavDrawer
-public class NavDrawer extends AbstractComponentContainer {
+public class NavDrawer extends AbstractSingleComponentContainer {
 
-    private final List<NavDrawerListener> listenerList = new ArrayList<>();
+//    private final List<NavDrawerListener> listenerList = new ArrayList<>();
     private List<Component> children = new ArrayList<>();
     
 	private NavDrawerServerRpc rpc = new NavDrawerServerRpc() {
 
 		public void clicked(boolean enabled) {
-			getState().expand = enabled;
-			for (NavDrawerListener listener : listenerList) {
-                listener.onToggle(enabled);
-            }
+//			getState().expand = enabled;
+//            toggle();
 		}
 	};
 

@@ -1,37 +1,27 @@
 package nz.co.exium.client;
 
-import nz.co.exium.NavDrawer;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.communication.RpcProxy;
-import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
+import com.vaadin.client.communication.RpcProxy;
+import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractSingleComponentContainerConnector;
-import com.vaadin.shared.ui.Connect;
 import com.vaadin.client.ui.SimpleManagedLayout;
+import com.vaadin.shared.ui.Connect;
+import nz.co.exium.NavDrawer;
 
 // Connector binds client-side widget class to server-side component class
 // Connector lives in the client and the @Connect annotation specifies the
 // corresponding server-side component
 @Connect(NavDrawer.class)
-public class NavDrawerConnector extends AbstractComponentContainerConnector implements
+public class NavDrawerConnector extends AbstractSingleComponentContainerConnector implements
 SimpleManagedLayout {
 
 	NavDrawerServerRpc rpc = RpcProxy.create(NavDrawerServerRpc.class, this);
 
 	public NavDrawerConnector() {
 		super();
-		this.getWidget().setEventListener(new NavDrawerListener() {
-			@Override
-	          public void onToggle(boolean expand) {
-	              NavDrawerConnector.this.rpc.clicked(expand);
-	          }
-	      });
 	      registerRpc(NavDrawerClientRpc.class, new NavDrawerClientRpc() {
 	          @Override
 	          public void setExpand(boolean expand, boolean animated) {
@@ -58,6 +48,10 @@ SimpleManagedLayout {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
+		configure();
+		if (stateChangeEvent.hasPropertyChanged("animationDuration")) {
+			getWidget().setAnimationDuration(getState().animationDuration);
+		}
 	}
 	
     @Override
@@ -70,7 +64,11 @@ SimpleManagedLayout {
 	
     @Override
     public void layout() {
-        getWidget().configure(getState().pixel);
+		configure();
         getWidget().initialize(getState().expand);
     }
+
+	private void configure() {
+		getWidget().configure(getState().pixel, getState().zIndex);
+	}
 }

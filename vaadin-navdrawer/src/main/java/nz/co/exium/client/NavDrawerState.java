@@ -4,9 +4,10 @@ import com.vaadin.shared.AbstractComponentState;
 
 public class NavDrawerState extends AbstractComponentState {
 
-    public boolean expand = false;
-    public int animationDuration = 500;
-    public int pixel = -1;
-    public int width = 256;
-
+    public Boolean expand = false;
+    public Integer animationDuration = 500;
+    public Integer pixel = -1;
+    public Integer width = 256;
+    public Integer zIndex = 1;
+    
 }
