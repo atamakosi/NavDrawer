@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
-import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractSingleComponentContainerConnector;
 import com.vaadin.client.ui.SimpleManagedLayout;
@@ -18,15 +17,17 @@ import nz.co.exium.NavDrawer;
 public class NavDrawerConnector extends AbstractSingleComponentContainerConnector implements
 SimpleManagedLayout {
 
-	NavDrawerServerRpc rpc = RpcProxy.create(NavDrawerServerRpc.class, this);
+//	NavDrawerServerRpc rpc = RpcProxy.create(NavDrawerServerRpc.class, this);
 
 	public NavDrawerConnector() {
 		super();
 	      registerRpc(NavDrawerClientRpc.class, new NavDrawerClientRpc() {
+
 	          @Override
 	          public void setExpand(boolean expand, boolean animated) {
 	              getWidget().setExpand(expand, animated);
 	          }
+
 	      });
 	}
 
@@ -69,6 +70,6 @@ SimpleManagedLayout {
     }
 
 	private void configure() {
-		getWidget().configure(getState().pixel, getState().zIndex);
+		getWidget().configure(getState().pixel);
 	}
 }

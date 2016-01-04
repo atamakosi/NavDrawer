@@ -17,7 +17,6 @@ public class NavDrawerWidget extends SimplePanel {
     private DrawerAnimation drawerAnimation = new DrawerAnimation();
 
     private Integer componentSize = null;
-    private int zIndex = 0;
     private int animationDuration;
     
 	public NavDrawerWidget() {
@@ -36,12 +35,11 @@ public class NavDrawerWidget extends SimplePanel {
 		animateTo(expand, 0, false);
 	}
 
-	public void configure(final int pixel, final int zIndex) {
+	public void configure(final int pixel) {
 		if (!this.initialized) {
 			if (pixel > 0) {
 				this.componentSize = pixel;
 			}
-			this.zIndex = zIndex;
 			this.initialized = true;
 		}
 	}
