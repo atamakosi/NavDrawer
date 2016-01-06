@@ -5,7 +5,7 @@
 	<groupId>nz.co.exium</groupId>
 	<artifactId>vaadin-navdrawer-root</artifactId>
 	<packaging>pom</packaging>
-	<version>1.04</version>
+	<version>1.09</version>
 	<name>NavDrawer Add-on Root Project</name>
 
 	<modules>

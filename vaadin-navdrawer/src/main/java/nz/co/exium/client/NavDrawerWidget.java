@@ -15,6 +15,7 @@ public class NavDrawerWidget extends SimplePanel {
     private boolean initialized = false;
 
     private DrawerAnimation drawerAnimation = new DrawerAnimation();
+	private NavDrawerListener listener;
 
     private Integer componentSize = null;
     private int animationDuration;
@@ -62,7 +63,7 @@ public class NavDrawerWidget extends SimplePanel {
 			return;
 		}
 
-		this.drawerAnimation.setAnimateToExpand(expand);
+		this.drawerAnimation.setAnimateToExpand(expand, fireToggleEvent);
 		this.drawerAnimation.run(duration);
 	}
 
@@ -75,14 +76,27 @@ public class NavDrawerWidget extends SimplePanel {
 		this.contentNode.setClassName(NavDrawerWidget.class + "-content" + styles);
 	}
 
+	public void setListener(NavDrawerListener listener) {
+		this.listener = listener;
+	}
+
+	public NavDrawerListener getListener() {
+		return this.listener;
+	}
+
+	public void setFixedContentSize(final int pixel) {
+		this.componentSize = pixel;
+	}
 
 
 	public class DrawerAnimation extends Animation {
 
 		private boolean expand = false;
+		private boolean fireEvent = true;
 
-		public void setAnimateToExpand(final boolean expand) {
+		public void setAnimateToExpand(final boolean expand, final boolean fireEvent) {
 			this.expand = expand;
+			this.fireEvent = fireEvent;
 		}
 
 		private void changeSize(final double size) {
@@ -128,6 +142,10 @@ public class NavDrawerWidget extends SimplePanel {
 				changeSize(0);
 			} else {
 				changeSize(NavDrawerWidget.this.componentSize);
+			}
+
+			if (NavDrawerWidget.this.listener != null && this.fireEvent) {
+				NavDrawerWidget.this.listener.onToggle(NavDrawerWidget.this.expand);
 			}
 		}
 
