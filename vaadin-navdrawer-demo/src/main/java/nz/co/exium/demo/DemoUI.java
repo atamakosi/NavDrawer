@@ -24,9 +24,13 @@ public class DemoUI extends UI
     @Override
     protected void init(VaadinRequest request) {
 
-        final NavDrawer component = new NavDrawer();
-        component.setWidth(256, Unit.PIXELS);
-        component.setHeight("100%");
+        CssLayout innerLayout = new CssLayout();
+        innerLayout.setWidth(256, Unit.PIXELS);
+        innerLayout.setHeight(100, Unit.PERCENTAGE);
+        Button testButton = new Button("Test button");
+        innerLayout.addComponent(testButton);
+        final NavDrawer component = new NavDrawer(innerLayout);
+
         Button button = new Button("Toggle");
         button.addClickListener(new Button.ClickListener() {
             @Override
@@ -34,7 +38,8 @@ public class DemoUI extends UI
                 component.toggle();
             }
         });
-
+        button.setPrimaryStyleName("margin-left: auto;\n" +
+                "margin-right: auto;");
         final CssLayout layout = new CssLayout();
         layout.setSizeFull();
         layout.addComponent(component);
