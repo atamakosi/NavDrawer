@@ -4,12 +4,14 @@ import com.google.gwt.animation.client.Animation;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 public class NavDrawerWidget extends SimplePanel {
 
-    private final DivElement wrapperNode, contentNode;
+	public static final String CLASSNAME = "v-navdrawer";
+
+	private final DivElement wrapperNode, contentNode;
 
     private boolean expand = false;
     private boolean initialized = false;
@@ -23,11 +25,11 @@ public class NavDrawerWidget extends SimplePanel {
 	public NavDrawerWidget() {
 		super();
         this.wrapperNode = Document.get().createDivElement();
-        this.wrapperNode.setClassName(NavDrawerWidget.class + "-wrapper");
+        this.wrapperNode.setClassName(NavDrawerWidget.CLASSNAME + "-wrapper");
         getElement().appendChild(this.wrapperNode);
 
         this.contentNode = Document.get().createDivElement();
-        this.contentNode.setClassName(NavDrawerWidget.class + "-content");
+        this.contentNode.setClassName(NavDrawerWidget.CLASSNAME + "-content");
         this.wrapperNode.appendChild(this.contentNode);
 	}
 
@@ -45,13 +47,19 @@ public class NavDrawerWidget extends SimplePanel {
 		}
 	}
 
-	//mark for removal?
+//	//mark for removal?
+//	@Override
+//	public void onBrowserEvent(final Event event) {
+//		if (event != null && (event.getTypeInt() == Event.ONCLICK)) {
+//			animateTo(!this.expand, this.animationDuration, true);
+//		}
+//		super.onBrowserEvent(event);
+//	}
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public void onBrowserEvent(final Event event) {
-		if (event != null && (event.getTypeInt() == Event.ONCLICK)) {
-			animateTo(!this.expand, this.animationDuration, true);
-		}
-		super.onBrowserEvent(event);
+	protected com.google.gwt.user.client.Element getContainerElement() {
+		return DOM.asOld(this.contentNode);
 	}
 
 	public void setExpand(final boolean expand, final boolean animated) {
@@ -73,7 +81,7 @@ public class NavDrawerWidget extends SimplePanel {
 
 	public void setStyles(final String styles) {
 		this.wrapperNode.setClassName(wrapperNode.getClassName() + styles);
-		this.contentNode.setClassName(NavDrawerWidget.class + "-content" + styles);
+		this.contentNode.setClassName(contentNode.getClassName() + "-content" + styles);
 	}
 
 	public void setListener(NavDrawerListener listener) {
@@ -91,11 +99,11 @@ public class NavDrawerWidget extends SimplePanel {
 
 	public class DrawerAnimation extends Animation {
 
-		private boolean expand = false;
+		private boolean animate = false;
 		private boolean fireEvent = true;
 
 		public void setAnimateToExpand(final boolean expand, final boolean fireEvent) {
-			this.expand = expand;
+			this.animate = expand;
 			this.fireEvent = fireEvent;
 		}
 
@@ -134,7 +142,7 @@ public class NavDrawerWidget extends SimplePanel {
 
 		@Override
 		protected void onComplete() {
-			NavDrawerWidget.this.expand = this.expand;
+			NavDrawerWidget.this.expand = this.animate;
 
 			if (!NavDrawerWidget.this.expand) {
 				NavDrawerWidget.this.contentNode.getStyle()
@@ -150,7 +158,7 @@ public class NavDrawerWidget extends SimplePanel {
 		}
 
 		private int extractProportionalLength(final double progress) {
-			if (this.expand) {
+			if (this.animate) {
 				return (int) (NavDrawerWidget.this.componentSize * progress);
 			} else {
 				return (int) (NavDrawerWidget.this.componentSize * (1.0 - progress));

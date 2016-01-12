@@ -7,6 +7,5 @@ public class NavDrawerState extends AbstractComponentState {
     public Boolean expand = false;
     public Integer animationDuration = 500;
     public Integer pixel = -1;
-    public Integer zIndex = 1;
-    
+
 }

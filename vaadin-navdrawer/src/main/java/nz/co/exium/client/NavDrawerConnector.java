@@ -16,21 +16,14 @@ import nz.co.exium.NavDrawer;
 // corresponding server-side component
 @Connect(NavDrawer.class)
 public class NavDrawerConnector extends AbstractSingleComponentContainerConnector implements
-SimpleManagedLayout {
+SimpleManagedLayout, NavDrawerListener {
 
 	NavDrawerServerRpc rpc = RpcProxy.create(NavDrawerServerRpc.class, this);
 
 	public NavDrawerConnector() {
 		super();
 
-		getWidget().setListener(new NavDrawerListener() {
-
-			@Override
-			public void onToggle(boolean expand) {
-				NavDrawerConnector.this.rpc.clicked(expand);
-			}
-
-		});
+		getWidget().setListener(this);
 
 		registerRpc(NavDrawerClientRpc.class, new NavDrawerClientRpc() {
 
@@ -60,9 +53,12 @@ SimpleManagedLayout {
 	@Override
 	public void onStateChanged(StateChangeEvent stateChangeEvent) {
 		super.onStateChanged(stateChangeEvent);
-		configure();
+		getWidget().configure(getState().pixel);
 		if (stateChangeEvent.hasPropertyChanged("animationDuration")) {
 			getWidget().setAnimationDuration(getState().animationDuration);
+		}
+		if (stateChangeEvent.hasPropertyChanged("pixel")) {
+			getWidget().setFixedContentSize(getState().pixel);
 		}
 	}
 	
@@ -76,11 +72,12 @@ SimpleManagedLayout {
 	
     @Override
     public void layout() {
-		configure();
+		getWidget().configure(getState().pixel);
         getWidget().initialize(getState().expand);
     }
 
-	private void configure() {
-		getWidget().configure(getState().pixel);
+	@Override
+	public void onToggle(boolean expand) {
+		NavDrawerConnector.this.rpc.clicked(expand);
 	}
 }

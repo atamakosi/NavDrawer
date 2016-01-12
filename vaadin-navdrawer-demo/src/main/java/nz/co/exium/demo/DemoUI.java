@@ -26,7 +26,7 @@ public class DemoUI extends UI
 
         final NavDrawer component = new NavDrawer();
         component.setWidth(256, Unit.PIXELS);
-        component.setHeightUndefined();
+        component.setHeight("100%");
         Button button = new Button("Toggle");
         button.addClickListener(new Button.ClickListener() {
             @Override
@@ -35,12 +35,10 @@ public class DemoUI extends UI
             }
         });
 
-        final HorizontalLayout layout = new HorizontalLayout();
-//        layout.setStyleName("demoContentLayout");
+        final CssLayout layout = new CssLayout();
         layout.setSizeFull();
         layout.addComponent(component);
         layout.addComponent(button);
-        layout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
         setContent(layout);
 
     }

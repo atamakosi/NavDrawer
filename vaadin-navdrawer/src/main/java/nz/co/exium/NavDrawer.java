@@ -1,6 +1,7 @@
 package nz.co.exium;
 
 import com.vaadin.ui.AbstractSingleComponentContainer;
+import com.vaadin.ui.Component;
 import nz.co.exium.client.NavDrawerClientRpc;
 import nz.co.exium.client.NavDrawerListener;
 import nz.co.exium.client.NavDrawerServerRpc;
@@ -26,9 +27,19 @@ public class NavDrawer extends AbstractSingleComponentContainer {
 	};
 
 	public NavDrawer() {
+        setHeight(100, Unit.PERCENTAGE);
+        setWidth(256, Unit.PIXELS);
         setImmediate(true);
 		registerRpc(this.rpc);
 	}
+
+    public NavDrawer(Component content) {
+        setContent(content);
+        setHeight(100, Unit.PERCENTAGE);
+        setWidth(256, Unit.PIXELS);
+        setImmediate(true);
+        registerRpc(this.rpc);
+    }
 
     public void addListener(NavDrawerListener listener) {
         listeners.add(listener);
