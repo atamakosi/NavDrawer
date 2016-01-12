@@ -118,7 +118,7 @@ public class NavDrawerWidget extends SimplePanel {
 			} else {
 				NavDrawerWidget.this.contentNode
 						.getStyle()
-						.setLeft(-1 * size, Style.Unit.PX);
+						.setLeft(-1 * (NavDrawerWidget.this.componentSize - size), Style.Unit.PX);
 			}
 		}
 

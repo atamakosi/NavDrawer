@@ -27,8 +27,13 @@ public class DemoUI extends UI
         CssLayout innerLayout = new CssLayout();
         innerLayout.setWidth(256, Unit.PIXELS);
         innerLayout.setHeight(100, Unit.PERCENTAGE);
-        Button testButton = new Button("Test button");
-        innerLayout.addComponent(testButton);
+
+        for (int i = 0; i < 6; i++) {
+            Button btn = new Button("Test Button " + i);
+            btn.setWidth(256, Unit.PIXELS);
+            innerLayout.addComponent(btn);
+        }
+
         final NavDrawer component = new NavDrawer(innerLayout);
 
         Button button = new Button("Toggle");
@@ -39,7 +44,7 @@ public class DemoUI extends UI
             }
         });
         button.setPrimaryStyleName("margin-left: auto;\n" +
-                "margin-right: auto;");
+                "margin-right: auto;\n");
         final CssLayout layout = new CssLayout();
         layout.setSizeFull();
         layout.addComponent(component);
