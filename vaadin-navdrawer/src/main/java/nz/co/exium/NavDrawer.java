@@ -28,7 +28,7 @@ public class NavDrawer extends AbstractSingleComponentContainer {
 
 	public NavDrawer() {
         setHeight(100, Unit.PERCENTAGE);
-        setWidth(256, Unit.PIXELS);
+        setWidth(0, Unit.PIXELS);
         setImmediate(true);
 		registerRpc(this.rpc);
 	}
@@ -36,7 +36,7 @@ public class NavDrawer extends AbstractSingleComponentContainer {
     public NavDrawer(Component content) {
         setContent(content);
         setHeight(100, Unit.PERCENTAGE);
-        setWidth(256, Unit.PIXELS);
+        setWidth(0, Unit.PIXELS);
         setImmediate(true);
         registerRpc(this.rpc);
     }

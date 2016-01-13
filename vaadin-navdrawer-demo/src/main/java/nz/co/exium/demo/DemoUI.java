@@ -43,12 +43,11 @@ public class DemoUI extends UI
                 component.toggle();
             }
         });
-        button.setPrimaryStyleName("margin-left: auto;\n" +
-                "margin-right: auto;\n");
-        final CssLayout layout = new CssLayout();
+        final VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
         layout.addComponent(component);
         layout.addComponent(button);
+        layout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
         setContent(layout);
 
     }
