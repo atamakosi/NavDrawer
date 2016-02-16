@@ -1,13 +1,12 @@
 package nz.co.exium.client;
 
 import com.google.gwt.animation.client.Animation;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public class NavDrawerWidget extends SimplePanel {
+public class NavDrawerWidget extends SimplePanel implements Event.NativePreviewHandler{
 
 	public static final String CLASSNAME = "v-navdrawer";
 
@@ -31,6 +30,7 @@ public class NavDrawerWidget extends SimplePanel {
         this.contentNode = Document.get().createDivElement();
         this.contentNode.setClassName(NavDrawerWidget.CLASSNAME + "-content");
         this.wrapperNode.appendChild(this.contentNode);
+		Event.addNativePreviewHandler(this);
 	}
 
    public void initialize(final boolean expand) {
@@ -46,15 +46,6 @@ public class NavDrawerWidget extends SimplePanel {
 			this.initialized = true;
 		}
 	}
-
-//	//mark for removal?
-//	@Override
-//	public void onBrowserEvent(final Event event) {
-//		if (event != null && (event.getTypeInt() == Event.ONCLICK)) {
-//			animateTo(!this.expand, this.animationDuration, true);
-//		}
-//		super.onBrowserEvent(event);
-//	}
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -94,6 +85,28 @@ public class NavDrawerWidget extends SimplePanel {
 
 	public void setFixedContentSize(final int pixel) {
 		this.componentSize = pixel;
+	}
+
+	private boolean eventTargetsPopup(NativeEvent event) {
+		EventTarget target = event.getEventTarget();
+		if (Element.is(target)) {
+			return getElement().isOrHasChild(Element.as(target));
+		}
+		return false;
+	}
+
+	@Override
+	public void onPreviewNativeEvent(Event.NativePreviewEvent nativePreviewEvent) {
+		if (expand && nativePreviewEvent != null && !nativePreviewEvent.isCanceled()) {
+			Event nativeEvent = Event.as(nativePreviewEvent.getNativeEvent());
+			switch (nativeEvent.getTypeInt()) {
+				case Event.ONCLICK :
+					if (eventTargetsPopup(nativeEvent)) {
+						return;
+					}
+					setExpand(false, true);
+			}
+		}
 	}
 
 
